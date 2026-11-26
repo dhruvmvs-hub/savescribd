@@ -1,0 +1,51 @@
+---
+// src/pages/document/[...id].astro - Direct URL shortcut interceptor
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import HeroDownloader from "../../components/HeroDownloader.astro";
+import PrefixTrickBanner from "../../components/PrefixTrickBanner.astro";
+import Footer from "../../components/Footer.astro";
+
+export function getStaticPaths() {
+  return [
+    { params: { id: "sample" } },
+    { params: { id: "593847291" } },
+    { params: { id: "749204812" } },
+    { params: { id: "618492015" } },
+  ];
+}
+
+const { id } = Astro.params;
+const docParam = id || "Sample";
+---
+
+<Layout
+  title={`Download Document ${docParam} - SaveScribd`}
+  description={`Instant high-resolution PDF download for Scribd document ${docParam}. Convert free on SaveScribd.`}
+>
+  <Header />
+
+  <main class="flex-1 bg-white">
+    <!-- Pre-populated Downloader with Blue Gradient & Dots -->
+    <HeroDownloader />
+
+    <PrefixTrickBanner />
+  </main>
+
+  <Footer />
+</Layout>
+
+<script define:vars={{ docParam }}>
+  // Automatically inject intercepted document URL into input and trigger conversion
+  window.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("doc-url-input");
+    const form = document.getElementById("convert-form");
+    if (input && form) {
+      input.value = `https://www.scribd.com/document/${docParam}`;
+      const submitBtn = document.getElementById("submit-convert-btn");
+      if (submitBtn) {
+        submitBtn.click();
+      }
+    }
+  });
+</script>

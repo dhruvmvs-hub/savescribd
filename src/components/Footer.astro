@@ -1,0 +1,73 @@
+---
+// Footer.astro - Fully conforming to fontfinderai.com specs & dark mode tokens
+---
+
+<footer class="mt-auto border-t border-[#ebebeb] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] text-[#4d4d4d] dark:text-[#a1a1a1] text-xs transition-colors duration-200">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+      <!-- Col 1: Brand & Bio -->
+      <div class="space-y-3 col-span-2 md:col-span-1">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded bg-[#171717] dark:bg-[#ededed] text-white dark:text-[#0a0a0a] flex items-center justify-center font-mono font-bold text-xs">
+            S
+          </div>
+          <span class="font-semibold text-sm tracking-tight text-[#171717] dark:text-[#ededed]">savescribd.com</span>
+        </div>
+        <p class="text-xs text-[#888888] dark:text-[#757575] leading-relaxed max-w-sm">
+          A free, fast, and secure document downloader for students, researchers, and professionals to archive documents and slides.
+        </p>
+      </div>
+
+      <!-- Col 2: Navigation -->
+      <div class="space-y-2">
+        <div class="font-mono text-[11px] font-semibold uppercase tracking-wider text-[#171717] dark:text-[#ededed]">Product</div>
+        <ul class="space-y-2">
+          <li><a href="/" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">Scribd Downloader</a></li>
+          <li><a href="#shortcut" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">Address Bar Shortcut</a></li>
+          <li><a href="#comparison" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">SaveScribd vs Scribd</a></li>
+          <li><a href="#faq" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">FAQ</a></li>
+          <li><a href="/blog" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">Blog</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Formats -->
+      <div class="space-y-2">
+        <div class="font-mono text-[11px] font-semibold uppercase tracking-wider text-[#171717] dark:text-[#ededed]">Output Formats</div>
+        <ul class="space-y-2">
+          <li><a href="/" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">Scribd to PDF (Vector)</a></li>
+          <li><a href="/" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">Scribd to PPT (Slides)</a></li>
+          <li><a href="/" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">Scribd to Word (.docx)</a></li>
+          <li><a href="/" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">Scribd to Text (.txt)</a></li>
+          <li><a href="/" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">Scribd Image Archive (.zip)</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Trust & Legal -->
+      <div class="space-y-2 col-span-2 md:col-span-1">
+        <div class="font-mono text-[11px] font-semibold uppercase tracking-wider text-[#171717] dark:text-[#ededed]">Legal & Policies</div>
+        <ul class="space-y-2 text-[#888888] dark:text-[#757575]">
+          <li><a href="/terms" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">Terms of Service</a></li>
+          <li><a href="/privacy" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">Privacy Policy</a></li>
+          <li><a href="/about" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">About Us</a></li>
+          <li><a href="/contact" class="hover:text-[#171717] dark:hover:text-[#ededed] transition-colors">DMCA & Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Educational Fair-Use Disclaimer -->
+    <div class="p-4 rounded-xl border border-[#ebebeb] dark:border-[#262626] bg-[#fafafa] dark:bg-[#111111] text-[11px] text-[#888888] dark:text-[#757575] leading-relaxed mb-8 transition-colors">
+      <strong class="text-[#171717] dark:text-[#ededed]">Legal Disclaimer:</strong> SaveScribd is an independent educational tool designed to facilitate document archiving, accessibility, and study. SaveScribd is not affiliated with, endorsed by, or sponsored by Scribd, Inc. All trademarks, service marks, and company names are the property of their respective owners. Users are solely responsible for ensuring their usage complies with relevant copyright laws.
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-[#ebebeb] dark:border-[#262626] text-[#888888] dark:text-[#757575] text-[11px]">
+      <div>
+        © 2026 SaveScribd.com — All rights reserved.
+      </div>
+      <div class="flex items-center gap-3 sm:gap-4 font-mono">
+        <span>Status: All Systems Operational</span>
+        <span>•</span>
+        <span>Version 2.0.4</span>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,53 @@
+---
+// Hero.astro - Following DESIGN.md typography & hero-band specs
+---
+
+<section class="relative pt-12 pb-10 sm:pt-20 sm:pb-16 overflow-hidden">
+  <!-- Subtle multi-stop mesh gradient restricted to the hero as per DESIGN.md -->
+  <div class="absolute inset-0 pointer-events-none -z-10 opacity-70 hero-mesh-gradient"></div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+    <!-- Technical Eyebrow Badge -->
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#ebebeb] bg-white/80 backdrop-blur-sm text-xs font-mono font-medium text-[#4d4d4d] mb-6 shadow-xs">
+      <span class="inline-block w-2 h-2 rounded-full bg-cyan-400"></span>
+      <span class="tracking-wide uppercase">SaveScribd Document Engine v2.0</span>
+      <span class="text-[#ebebeb]">|</span>
+      <span class="text-[#8f8f8f]">Zero Paywalls • Multi-Format</span>
+    </div>
+
+    <!-- Display Headline (-2.4px tracking as specified in DESIGN.md) -->
+    <h1 class="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-[-0.04em] text-[#171717] leading-[1.08] mb-6">
+      Download & Read Scribd Documents <span class="bg-gradient-to-r from-[#007cf0] via-[#7928ca] to-[#ff0080] bg-clip-text text-transparent">Instantly</span>
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="max-w-2xl mx-auto text-base sm:text-lg text-[#4d4d4d] leading-relaxed mb-8">
+      The fastest, unrestricted Scribd document converter. Download in high-definition PDF, extract clean text for AI prompts, or read right in your browser without signing up.
+    </p>
+
+    <!-- Quick Stat Pills -->
+    <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs font-mono text-[#4d4d4d]">
+      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#ebebeb] shadow-xs">
+        <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+        </svg>
+        <span>100% Free Forever</span>
+      </div>
+
+      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#ebebeb] shadow-xs">
+        <svg class="w-4 h-4 text-[#0070f3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <span>PDF, TXT, DOCX & Images</span>
+      </div>
+
+      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#ebebeb] shadow-xs">
+        <svg class="w-4 h-4 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+        <span>In-Browser Live Reader</span>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import HeroDownloader from "../../components/HeroDownloader.astro";
+import Footer from "../../components/Footer.astro";
+import { copy, locales, type Locale } from "../../i18n/locales";
+
+export function getStaticPaths() {
+  return locales.filter((locale) => locale !== 'en').map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.params.lang as Exclude<Locale, 'en'>;
+const t = copy[locale];
+---
+
+<Layout locale={locale} languageAlternates={true} title={t.title} description={t.description} keywords={t.keywords}>
+  <Header locale={locale} />
+  <main class="flex-1 bg-white dark:bg-[#0a0a0a]">
+    <HeroDownloader locale={locale} />
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight mb-6">{t.howTitle}</h2>
+      <ol class="grid gap-4 sm:grid-cols-3 list-decimal list-inside">
+        {t.steps.map((step, index) => <li class="rounded-2xl border border-[#ebebeb] dark:border-[#262626] p-5 text-sm leading-relaxed"><strong class="block mb-2">{index + 1}</strong>{step}</li>)}
+      </ol>
+    </section>
+    <section class="bg-[#fafafa] dark:bg-[#111111] border-y border-[#ebebeb] dark:border-[#262626]">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight mb-6">{t.benefitsTitle}</h2>
+        <ul class="space-y-4 text-sm leading-relaxed">{t.benefits.map((benefit) => <li class="flex gap-3"><span class="text-emerald-600" aria-hidden="true">✓</span><span>{benefit}</span></li>)}</ul>
+        <p class="mt-6 text-xs leading-relaxed opacity-70">SaveScribd is an independent utility and is not affiliated with Scribd. Only download material you are authorized to access and use.</p>
+      </div>
+    </section>
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight mb-6">{t.faqTitle}</h2>
+      <div class="space-y-3">{t.faqs.map((question, index) => <details class="rounded-xl border border-[#ebebeb] dark:border-[#262626] p-5"><summary class="font-semibold cursor-pointer">{question}</summary><p class="mt-3 text-sm leading-relaxed opacity-80">{index === 0 ? t.steps[0] + ' ' + t.steps[1] + ' ' + t.steps[2] : index === 1 ? t.benefits[2] : t.benefits[1]}</p></details>)}</div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,148 @@
+---
+// ComparisonMatrix.astro - Demonstrates concrete superiority over Official Scribd with fontfinder tokens
+const comparisonItems = [
+  {
+    feature: "Price / Subscription Required",
+    note: "Credit card or account requirement",
+    savescribd: "100% Free Forever",
+    savescribdHighlight: true,
+    official: "$11.99 / month",
+    officialWarning: true,
+  },
+  {
+    feature: "Export Format Variety",
+    note: "Supported download formats",
+    savescribd: "PDF, PPT, TXT, DOCX, ZIP",
+    savescribdBadge: true,
+    official: "PDF / TXT (Limited)",
+    officialWarning: false,
+  },
+  {
+    feature: "In-Browser Live Document Reader",
+    note: "Read pages before downloading",
+    savescribd: "✓ Full Multi-Page Reader",
+    savescribdHighlight: true,
+    official: "Blurs after page 3",
+    officialWarning: false,
+  },
+  {
+    feature: "Batch Downloader Queue",
+    note: "Download multiple documents simultaneously",
+    savescribd: "✓ Yes (Unified ZIP)",
+    savescribdHighlight: true,
+    official: "✗ 1 by 1 only",
+    officialWarning: true,
+  },
+  {
+    feature: "Direct URL Prefix Shortcut",
+    note: "Change domain in URL bar to download",
+    savescribd: "✓ savescribd.com/...",
+    savescribdHighlight: true,
+    official: "N/A",
+    officialWarning: false,
+  },
+  {
+    feature: "Clean Experience",
+    note: "No deceptive pop-ups or spammy redirects",
+    savescribd: "✓ Fast, Zero Paywalls",
+    savescribdHighlight: true,
+    official: "Heavy Paywall Popups",
+    officialWarning: false,
+  },
+];
+---
+
+<section id="comparison" class="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 scroll-mt-24">
+  <div class="text-center mb-10 sm:mb-12">
+    <div class="inline-block px-2.5 py-0.5 rounded text-[11px] font-mono uppercase tracking-wide text-[#171717] dark:text-[#ededed] bg-[#fafafa] dark:bg-[#111111] border border-[#ebebeb] dark:border-[#262626] mb-3">
+      BENCHMARK COMPARISON
+    </div>
+    <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-[#171717] dark:text-[#ededed] text-balance">
+      SaveScribd vs. Official Scribd
+    </h2>
+    <p class="text-xs sm:text-sm text-[#4d4d4d] dark:text-[#a1a1a1] max-w-lg mx-auto mt-2 text-balance leading-relaxed">
+      Compare our free online downloader with official subscription plans to save documents, books, and slides without fees or account limits.
+    </p>
+  </div>
+
+  <!-- Desktop Table View (Hidden on Mobile) -->
+  <div class="hidden sm:block rounded-2xl border border-[#ebebeb] dark:border-[#262626] bg-white dark:bg-[#111111] overflow-hidden shadow-2xs transition-colors">
+    <div class="overflow-x-auto -mx-0.5">
+      <table class="w-full min-w-[500px] text-left text-xs sm:text-sm">
+        <thead>
+          <tr class="border-b border-[#ebebeb] dark:border-[#262626] bg-[#fafafa] dark:bg-[#1a1a1a]">
+            <th class="p-4 font-mono font-medium text-[#4d4d4d] dark:text-[#a1a1a1] w-1/2">Feature / Capability</th>
+            <th class="p-4 font-semibold text-[#171717] dark:text-[#ededed] bg-[#171717]/5 dark:bg-blue-500/10 w-1/4 text-center">
+              <span class="inline-flex items-center gap-1.5 text-[#0070f3] font-bold">
+                SaveScribd.com
+              </span>
+            </th>
+            <th class="p-4 font-medium text-[#888888] dark:text-[#757575] w-1/4 text-center">Scribd Official</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#ebebeb] dark:divide-[#262626] font-sans">
+          {
+            comparisonItems.map((item) => (
+              <tr>
+                <td class="p-4 font-medium text-[#171717] dark:text-[#ededed]">
+                  {item.feature}
+                  <span class="block text-[11px] text-[#888888] dark:text-[#757575] font-normal">{item.note}</span>
+                </td>
+                <td class="p-4 text-center font-semibold bg-[#171717]/5 dark:bg-blue-500/10">
+                  {item.savescribdBadge ? (
+                    <span class="inline-block px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 text-xs font-mono">
+                      {item.savescribd}
+                    </span>
+                  ) : item.savescribdHighlight ? (
+                    <span class="text-emerald-600 dark:text-emerald-400 font-bold">{item.savescribd}</span>
+                  ) : (
+                    <span class="text-[#171717] dark:text-[#ededed]">{item.savescribd}</span>
+                  )}
+                </td>
+                <td class={`p-4 text-center ${item.officialWarning ? "text-[#ee0000] dark:text-red-400 font-medium" : "text-[#888888] dark:text-[#757575]"}`}>
+                  {item.official}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Mobile Card Deck View (Zero horizontal scroll, perfectly fitted) -->
+  <div class="sm:hidden space-y-3">
+    {
+      comparisonItems.map((item) => (
+        <div class="rounded-2xl border border-[#ebebeb] dark:border-[#262626] bg-white dark:bg-[#111111] p-4 shadow-2xs">
+          <div class="mb-2.5">
+            <h4 class="text-xs font-semibold text-[#171717] dark:text-[#ededed] leading-snug">{item.feature}</h4>
+            <span class="text-[11px] text-[#888888] dark:text-[#757575]">{item.note}</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#ebebeb] dark:border-[#262626]">
+            <!-- SaveScribd Side -->
+            <div class="p-2.5 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-900/40">
+              <span class="block text-[10px] font-mono uppercase font-bold text-emerald-700 dark:text-emerald-400 mb-1">
+                SaveScribd
+              </span>
+              <span class="text-xs font-semibold text-emerald-900 dark:text-emerald-200 break-words">
+                {item.savescribd}
+              </span>
+            </div>
+
+            <!-- Scribd Official Side -->
+            <div class="p-2.5 rounded-xl bg-[#fafafa] dark:bg-[#1a1a1a] border border-[#ebebeb] dark:border-[#262626]">
+              <span class="block text-[10px] font-mono uppercase text-[#888888] dark:text-[#757575] mb-1">
+                Official Scribd
+              </span>
+              <span class={`text-xs ${item.officialWarning ? "text-red-600 dark:text-red-400 font-medium" : "text-[#4d4d4d] dark:text-[#a1a1a1]"}`}>
+                {item.official}
+              </span>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

@@ -1,11 +1,46 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import HeroDownloader from "../components/HeroDownloader.astro";
+import PrefixTrickBanner from "../components/PrefixTrickBanner.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import ComparisonMatrix from "../components/ComparisonMatrix.astro";
+import FeaturesGrid from "../components/FeaturesGrid.astro";
+import SeoContent from "../components/SeoContent.astro";
+import FaqSection from "../components/FaqSection.astro";
+import Footer from "../components/Footer.astro";
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+  languageAlternates={true}
+  title="Scribd Downloader - Free Online Scribd Downloader PDF & PPT | SaveScribd"
+  description="Use SaveScribd, the #1 free online scribd downloader. Download scribd documents & books as PDF, PPT format, TXT or DOCX instantly without an account. Fast, safe & rated best on Reddit."
+  keywords="scribd downloader, scribd downloader ppt format, scribd downloader online, scribd downloader free, scribd downloader pdf, free scribd downloader, scribd downloader ppt free, scribd downloader online free, online scribd downloader, scribd downloader reddit, scribd downloader free online, save scribd, save scribd book as pdf, save scribd free"
+>
+  <Header />
+
+  <main class="flex-1 bg-white dark:bg-[#0a0a0a] transition-colors duration-200">
+    <!-- Top Hero Section with Blue Gradient & Dots -->
+    <HeroDownloader />
+
+    <!-- PRO TIP Section: Address Bar Shortcut -->
+    <PrefixTrickBanner />
+
+    <!-- How It Works Section: 3 Simple Steps -->
+    <HowItWorks />
+
+    <!-- Side-by-Side Comparison Matrix -->
+    <ComparisonMatrix />
+
+    <!-- Feature Architecture Grid -->
+    <FeaturesGrid />
+
+    <!-- Comprehensive 800-1200 Word On-Page SEO Guide & Technical Overview -->
+    <SeoContent />
+
+    <!-- Frequently Asked Questions -->
+    <FaqSection />
+  </main>
+
+  <Footer />
 </Layout>

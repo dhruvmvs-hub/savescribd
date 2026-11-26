@@ -1,0 +1,225 @@
+---
+// FeaturesGrid.astro - "Built to be trusted, not just fast" platform architecture matching fontfinderai.com
+const features = [
+  {
+    id: "free",
+    tab: "Completely Free",
+    badge: "01 / NO FEES",
+    title: "100% Free Forever",
+    desc: "Save as many Scribd documents, books, and presentations as you like with zero fees, subscriptions, or hidden download limits.",
+    bullets: ["Zero credit card requirement", "Unlimited document downloads", "No account registration"],
+  },
+  {
+    id: "speed",
+    tab: "Fast Downloads",
+    badge: "02 / SUB-SECOND",
+    title: "Instant Cloud Processing",
+    desc: "Optimized distributed edge processing turns any Scribd link into a ready-to-save file in just a few seconds.",
+    bullets: ["Sub-second edge caching", "Direct download attachments", "Instant server stream extraction"],
+  },
+  {
+    id: "privacy",
+    tab: "Private & Secure",
+    badge: "03 / ANONYMOUS",
+    title: "100% Private & Volatile",
+    desc: "No accounts, emails, or personal tracking. Processed documents are temporarily cached and automatically purged every 60 minutes.",
+    bullets: ["Zero personal data stored", "Automatic 60-min cache purge", "Sandboxed & malware-scanned"],
+  },
+  {
+    id: "formats",
+    tab: "PDF, PPT, DOCX",
+    badge: "04 / MULTI-EXPORT",
+    title: "4-Way Format Flexibility",
+    desc: "Download as high-res vector PDF to read, editable PPT for slide decks, or clean DOCX & TXT for research notes.",
+    bullets: ["Vector PDF (high DPI)", "Editable PPT / presentation slides", "Clean Word DOCX & TXT extraction"],
+  },
+  {
+    id: "devices",
+    tab: "Works Everywhere",
+    badge: "05 / CROSS-PLATFORM",
+    title: "Universal Device Support",
+    desc: "Fully responsive on every screen and OS—from iPhone and Android mobile browsers to iPad, Mac, and Windows desktops.",
+    bullets: ["iPhone & Android optimized", "Touch-friendly live reader", "Zero app installation needed"],
+  },
+  {
+    id: "quality",
+    tab: "Original Quality",
+    badge: "06 / LOSSLESS",
+    title: "Crystal-Clear Vector Quality",
+    desc: "Extracts original SVG vector paths and typography so every page and slide stays tack-sharp without blurry raster compression.",
+    bullets: ["Lossless SVG vector paths", "Embedded font rendering", "High-DPI print readiness"],
+  },
+];
+---
+
+<section class="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 scroll-mt-24" id="platform-architecture">
+  <div class="text-center mb-10 sm:mb-12">
+    <div class="inline-block px-2.5 py-0.5 rounded text-[11px] font-mono uppercase tracking-wide text-[#171717] dark:text-[#ededed] bg-[#fafafa] dark:bg-[#111111] border border-[#ebebeb] dark:border-[#262626] mb-3">
+      ARCHITECTURE & TRUST
+    </div>
+    <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-[#171717] dark:text-[#ededed] text-balance">
+      Built to be trusted, not just fast
+    </h2>
+    <p class="text-xs sm:text-sm text-[#4d4d4d] dark:text-[#a1a1a1] max-w-xl mx-auto mt-2 text-balance leading-relaxed">
+      Most document converters deliver blurry screenshots or force you through survey loops. SaveScribd is built to show its work with transparent, original-quality extraction.
+    </p>
+  </div>
+
+  <!-- Interactive Feature Tabs Navigation Bar -->
+  <div class="mb-6 p-1.5 rounded-2xl bg-[#fafafa] dark:bg-[#111111] border border-[#ebebeb] dark:border-[#262626] overflow-x-auto no-scrollbar transition-colors">
+    <div class="flex sm:grid sm:grid-cols-6 gap-1 min-w-max sm:min-w-0" id="feature-tabs-container" role="tablist">
+      {
+        features.map((feat, idx) => (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={idx === 0 ? "true" : "false"}
+            aria-controls={`feature-panel-${feat.id}`}
+            id={`tab-btn-${feat.id}`}
+            data-target={feat.id}
+            class={`feature-tab-btn flex-1 py-2 px-3 rounded-xl text-xs font-medium transition-all cursor-pointer whitespace-nowrap text-center select-none ${
+              idx === 0
+                ? "bg-[#171717] dark:bg-[#ededed] text-white dark:text-[#0a0a0a] shadow-xs font-semibold"
+                : "text-[#4d4d4d] dark:text-[#a1a1a1] hover:text-[#171717] dark:hover:text-[#ededed] hover:bg-white/60 dark:hover:bg-[#1a1a1a]"
+            }`}
+          >
+            {feat.tab}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Active Feature Spotlight Display Card -->
+  <div class="relative rounded-2xl border border-[#ebebeb] dark:border-[#262626] bg-white dark:bg-[#111111] p-5 sm:p-8 shadow-2xs mb-6 transition-all min-h-[220px]">
+    {
+      features.map((feat, idx) => (
+        <div
+          id={`feature-panel-${feat.id}`}
+          role="tabpanel"
+          aria-labelledby={`tab-btn-${feat.id}`}
+          class={`feature-tab-content space-y-4 transition-all duration-200 ${idx === 0 ? "block" : "hidden"}`}
+        >
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#ebebeb] dark:border-[#262626] pb-3">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-[#0070f3] font-semibold">
+              {feat.badge}
+            </span>
+            <span class="inline-flex items-center gap-1.5 text-xs font-mono text-[#888888] dark:text-[#757575]">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Active Architecture Pillar</span>
+            </span>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-lg sm:text-xl font-semibold text-[#171717] dark:text-[#ededed]">
+              {feat.title}
+            </h3>
+            <p class="text-xs sm:text-sm text-[#4d4d4d] dark:text-[#a1a1a1] leading-relaxed max-w-2xl">
+              {feat.desc}
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
+            {feat.bullets.map((b) => (
+              <div class="flex items-center gap-2 p-3 rounded-xl border border-[#ebebeb] dark:border-[#262626] bg-[#fafafa] dark:bg-[#1a1a1a] text-xs font-medium text-[#171717] dark:text-[#ededed]">
+                <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{b}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- 6-Card Grid Summary (Clickable to switch tab) -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+    {
+      features.map((feat) => (
+        <button
+          type="button"
+          data-tab-switch={feat.id}
+          class="feature-mini-card group text-left rounded-2xl border border-[#ebebeb] dark:border-[#262626] bg-white dark:bg-[#111111] p-4 sm:p-5 hover:border-[#171717] dark:hover:border-[#ededed] transition-all shadow-2xs cursor-pointer"
+        >
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-[#888888] dark:text-[#757575] group-hover:text-[#0070f3] transition-colors">
+              {feat.badge.split(" / ")[0]}
+            </span>
+            <svg class="w-3.5 h-3.5 text-[#888888] dark:text-[#757575] group-hover:text-[#171717] dark:group-hover:text-[#ededed] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+          <h4 class="text-xs sm:text-sm font-semibold text-[#171717] dark:text-[#ededed] group-hover:text-[#0070f3] transition-colors mb-1">
+            {feat.tab}
+          </h4>
+          <p class="text-[11px] text-[#888888] dark:text-[#757575] line-clamp-2 leading-relaxed">
+            {feat.desc}
+          </p>
+        </button>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
+
+<script>
+  function setupFeatureTabs() {
+    const tabButtons = document.querySelectorAll<HTMLButtonElement>(".feature-tab-btn");
+    const tabPanels = document.querySelectorAll<HTMLElement>(".feature-tab-content");
+    const miniCards = document.querySelectorAll<HTMLButtonElement>("[data-tab-switch]");
+
+    function activateTab(targetId: string) {
+      tabButtons.forEach((btn) => {
+        const isMatch = btn.getAttribute("data-target") === targetId;
+        btn.setAttribute("aria-selected", isMatch ? "true" : "false");
+        if (isMatch) {
+          btn.className = "feature-tab-btn flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer whitespace-nowrap text-center select-none bg-[#171717] dark:bg-[#ededed] text-white dark:text-[#0a0a0a] shadow-xs";
+        } else {
+          btn.className = "feature-tab-btn flex-1 py-2 px-3 rounded-xl text-xs font-medium transition-all cursor-pointer whitespace-nowrap text-center select-none text-[#4d4d4d] dark:text-[#a1a1a1] hover:text-[#171717] dark:hover:text-[#ededed] hover:bg-white/60 dark:hover:bg-[#1a1a1a]";
+        }
+      });
+
+      tabPanels.forEach((panel) => {
+        if (panel.id === `feature-panel-${targetId}`) {
+          panel.classList.remove("hidden");
+          panel.classList.add("block");
+        } else {
+          panel.classList.add("hidden");
+          panel.classList.remove("block");
+        }
+      });
+    }
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const target = btn.getAttribute("data-target");
+        if (target) activateTab(target);
+      });
+    });
+
+    miniCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const target = card.getAttribute("data-tab-switch");
+        if (target) {
+          activateTab(target);
+          const tabsBar = document.getElementById("feature-tabs-container");
+          tabsBar?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      });
+    });
+  }
+
+  setupFeatureTabs();
+  document.addEventListener("astro:page-load", setupFeatureTabs);
+</script>

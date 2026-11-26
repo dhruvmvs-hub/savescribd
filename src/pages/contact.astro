@@ -1,0 +1,21 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout title="DMCA & Contact - SaveScribd">
+  <Header />
+  <main class="max-w-3xl mx-auto px-4 py-12 sm:py-16 text-[#171717] dark:text-[#ededed] flex-1">
+    <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight mb-6 text-[#171717] dark:text-white">DMCA Notice & Contact</h1>
+    <div class="space-y-4 text-xs sm:text-sm text-[#4d4d4d] dark:text-[#a1a1aa] leading-relaxed">
+      <p>SaveScribd respects intellectual property rights. If you are a copyright owner or authorized representative and believe content is being processed without authorization, please contact our compliance desk.</p>
+      <div class="p-4 rounded-xl border border-[#ebebeb] dark:border-[#27272a] bg-white dark:bg-[#121316] font-mono text-xs text-[#171717] dark:text-zinc-200 shadow-2xs">
+        Email: contact@savescribd.com<br />
+        Subject: DMCA Removal Request - [Document ID / URL]
+      </div>
+      <p>Please allow 24 to 48 business hours for removal requests to be reviewed and blacklisted across our edge converters.</p>
+    </div>
+  </main>
+  <Footer />
+</Layout>

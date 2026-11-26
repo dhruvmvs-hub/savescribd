@@ -1,0 +1,41 @@
+---
+// AdPlacement.astro - Clean, non-intrusive sponsor and advertisement placement container
+interface Props {
+  slotId: string;
+  format?: "leaderboard" | "banner" | "sidebar";
+  className?: string;
+}
+
+const { slotId, format = "leaderboard", className = "" } = Astro.props;
+---
+
+<div class={`w-full max-w-4xl mx-auto px-4 my-8 ${className}`}>
+  <div class="rounded-xl border border-dashed border-[#ebebeb] bg-[#fafafa] p-3 text-center transition-all hover:border-[#8f8f8f]/40">
+    <div class="flex items-center justify-between px-2 mb-2">
+      <span class="text-[10px] font-mono uppercase tracking-wider text-[#a1a1a1]">Sponsored Advertisement</span>
+      <span class="text-[10px] font-mono text-[#a1a1a1]">Ad #{slotId}</span>
+    </div>
+
+    <!-- Ad Content Container (ready for Google AdSense / Mediavine / Carbon) -->
+    <div
+      id={slotId}
+      class={`mx-auto bg-white border border-[#ebebeb] rounded-lg flex flex-col items-center justify-center text-xs text-[#8f8f8f] transition-all overflow-hidden ${
+        format === "leaderboard"
+          ? "min-h-[90px] max-w-[728px]"
+          : format === "banner"
+            ? "min-h-[60px] max-w-[468px]"
+            : "min-h-[250px] max-w-[300px]"
+      }`}
+    >
+      <div class="p-4 flex flex-col items-center gap-1.5">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-[#ebebeb]"></span>
+          <span class="font-mono text-[11px] text-[#4d4d4d] font-medium">Verified Clean Document Infrastructure</span>
+        </div>
+        <p class="text-[11px] text-[#8f8f8f] max-w-md">
+          SaveScribd delivers ad-supported free document conversions with zero malware and zero aggressive redirects.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

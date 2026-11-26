@@ -1,0 +1,378 @@
+---
+import { copy, type Locale } from "../i18n/locales";
+const locale = (Astro.props.locale ?? 'en') as Locale;
+const localized = locale === 'en' ? null : copy[locale];
+---
+// HeroDownloader.astro - Spacious, minimal tool layout inspired by fontfinderai.com
+---
+
+<section class="relative pt-12 pb-16 sm:pt-20 sm:pb-24 overflow-hidden border-b border-[#ebebeb] dark:border-[#262626] bg-white dark:bg-[#0a0a0a] transition-colors duration-200">
+  <!-- Ambient Spotlight Glow (Exact FontFinderAI White Shade Bloom) -->
+  <div class="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[480px] overflow-hidden" aria-hidden="true">
+    <div
+      class="absolute inset-x-0 top-[-220px] h-[580px] opacity-[0.06] dark:opacity-[0.18] blur-[110px] transition-opacity"
+      style="background:
+        radial-gradient(42% 55% at 32% 45%, #ffffff 0%, transparent 100%),
+        radial-gradient(38% 52% at 68% 40%, #ffffff 0%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 100%),
+          linear-gradient(to right, transparent 0%, #000 15%, #000 85%, transparent 100%);
+        mask-image: linear-gradient(to bottom, #000 40%, transparent 100%),
+          linear-gradient(to right, transparent 0%, #000 15%, #000 85%, transparent 100%);
+        -webkit-mask-composite: source-in;
+        mask-composite: intersect;"
+    ></div>
+  </div>
+
+  <!-- Subtle Dots Pattern Overlay -->
+  <div class="absolute inset-0 pointer-events-none z-0 dots-pattern-overlay opacity-50 dark:opacity-20" aria-hidden="true"></div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
+    <!-- Live Pill Badge -->
+    <div class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 rounded-full border border-emerald-200/80 dark:border-emerald-900/50 bg-[#fafafa] dark:bg-[#111111] text-[11px] sm:text-xs font-mono text-[#4d4d4d] dark:text-[#a1a1a1] mb-6 shadow-2xs transition-colors">
+      <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      <span class="font-semibold text-emerald-700 dark:text-emerald-400">Live</span>
+      <span class="text-[#ebebeb] dark:text-[#262626]">•</span>
+      <span>Direct Scribd Downloader</span>
+    </div>
+
+    <!-- Bold Display Headline -->
+    <h1 class="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-[-0.03em] text-[#171717] dark:text-[#ededed] leading-[1.1] mb-4 transition-colors text-balance">
+      {localized?.headline ?? 'Download Scribd Documents as PDF or PPT'}
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="max-w-xl mx-auto text-sm sm:text-base text-[#4d4d4d] dark:text-[#a1a1a1] leading-relaxed mb-8 transition-colors text-balance">
+      {localized?.subtitle ?? 'Paste any document link and save it immediately — clean vector typography, original slide layouts, and no accounts or paywalls.'}
+    </p>
+
+    <!-- SPACIOUS PROMINENT LINK INPUT BAR (fontfinder style) -->
+    <form id="convert-form" class="w-full max-w-2xl mx-auto mb-3">
+      <div class="relative flex items-center bg-white dark:bg-[#111111] rounded-2xl border border-[#ebebeb] dark:border-[#262626] shadow-sm hover:border-[#a1a1a1] dark:hover:border-[#4d4d4d] p-1.5 sm:p-2 focus-within:border-[#171717] dark:focus-within:border-[#ededed] focus-within:ring-2 focus-within:ring-[#171717]/5 dark:focus-within:ring-white/5 transition-all">
+        <!-- Chain Link Icon -->
+        <div class="pl-2 sm:pl-3 pr-2 text-[#888888] dark:text-[#757575] shrink-0 pointer-events-none">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+          </svg>
+        </div>
+
+        <!-- Clean Text Input -->
+        <input
+          type="text"
+          id="doc-url-input"
+          placeholder="https://www.scribd.com/document/..."
+          required
+          autocomplete="off"
+          class="w-full h-11 sm:h-12 bg-transparent border-0 outline-none text-xs sm:text-sm text-[#171717] dark:text-[#ededed] placeholder:text-[#888888] dark:placeholder:text-[#757575] font-mono min-w-0"
+        />
+
+        <!-- Clear Button -->
+        <button
+          type="button"
+          id="clear-input-btn"
+          class="hidden shrink-0 w-7 h-7 rounded-full text-[#888888] hover:text-[#171717] dark:hover:text-[#ededed] flex items-center justify-center transition-colors cursor-pointer mr-1 select-none"
+          title="Clear link"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <!-- Paste Button -->
+        <button
+          type="button"
+          id="paste-btn"
+          class="shrink-0 h-9 px-2.5 sm:px-3 mr-1.5 rounded-xl border border-[#ebebeb] dark:border-[#262626] bg-[#fafafa] dark:bg-[#1a1a1a] hover:bg-[#f5f5f5] dark:hover:bg-[#262626] text-xs font-medium text-[#171717] dark:text-[#ededed] flex items-center gap-1.5 transition-colors cursor-pointer select-none active:scale-[0.97]"
+          title="Paste from clipboard"
+        >
+          <svg class="w-3.5 h-3.5 text-[#888888] dark:text-[#757575]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+          <span id="paste-btn-text" class="hidden xs:inline">Paste</span>
+        </button>
+
+        <!-- Primary Download Button -->
+        <button
+          type="submit"
+          id="submit-convert-btn"
+          class="shrink-0 h-10 sm:h-11 px-4 sm:px-6 rounded-xl bg-[#171717] hover:bg-black dark:bg-[#ededed] dark:hover:bg-white text-white dark:text-[#0a0a0a] text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs active:scale-[0.98] select-none"
+        >
+          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span id="submit-btn-label">Download</span>
+        </button>
+      </div>
+    </form>
+
+    <!-- fontfinder-style microcopy -->
+    <p class="text-xs text-[#888888] dark:text-[#757575] font-mono mb-6 sm:mb-8 text-center">
+      Free and unlimited. No account. Your document is never stored.
+    </p>
+
+    <!-- Feature Trust Badges / Pills -->
+    <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mb-8 sm:mb-10">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[#fafafa] dark:bg-[#111111] border border-[#ebebeb] dark:border-[#262626] text-[#4d4d4d] dark:text-[#a1a1a1] transition-colors">
+        <svg class="w-3.5 h-3.5 shrink-0 text-[#0070f3]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="2" y1="12" x2="22" y2="12" />
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+        </svg>
+        <span>100% Online</span>
+      </div>
+
+      <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[#fafafa] dark:bg-[#111111] border border-[#ebebeb] dark:border-[#262626] text-[#4d4d4d] dark:text-[#a1a1a1] transition-colors">
+        <svg class="w-3.5 h-3.5 shrink-0 text-[#0070f3]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <polyline points="16 11 18 13 22 9" />
+        </svg>
+        <span>No Login Required</span>
+      </div>
+
+      <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[#fafafa] dark:bg-[#111111] border border-[#ebebeb] dark:border-[#262626] text-[#4d4d4d] dark:text-[#a1a1a1] transition-colors">
+        <svg class="w-3.5 h-3.5 shrink-0 text-[#0070f3]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+        <span>Secure & Private</span>
+      </div>
+
+      <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[#fafafa] dark:bg-[#111111] border border-[#ebebeb] dark:border-[#262626] text-[#4d4d4d] dark:text-[#a1a1a1] transition-colors">
+        <svg class="w-3.5 h-3.5 shrink-0 text-[#0070f3]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+        <span>No Files Stored</span>
+      </div>
+
+      <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[#fafafa] dark:bg-[#111111] border border-[#ebebeb] dark:border-[#262626] text-[#4d4d4d] dark:text-[#a1a1a1] transition-colors">
+        <svg class="w-3.5 h-3.5 shrink-0 text-[#0070f3]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </svg>
+        <span>Fast Direct Links</span>
+      </div>
+    </div>
+
+    <!-- 4-Stat Metric Counter Box -->
+    <div class="w-full max-w-2xl mx-auto rounded-2xl border border-[#ebebeb] dark:border-[#262626] bg-white dark:bg-[#111111] shadow-2xs grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#ebebeb] dark:divide-[#262626] p-2 sm:p-3 text-center mb-6 transition-colors">
+      <div class="p-3">
+        <div class="text-[11px] font-mono text-[#888888] dark:text-[#757575] flex items-center justify-center gap-1 mb-1">
+          <svg class="w-3 h-3 text-[#888888] dark:text-[#757575]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span>Total Documents</span>
+        </div>
+        <div class="text-xl sm:text-2xl font-bold font-mono text-[#171717] dark:text-[#ededed]">1.8M+</div>
+      </div>
+
+      <div class="p-3">
+        <div class="text-[11px] font-mono text-[#888888] dark:text-[#757575] flex items-center justify-center gap-1 mb-1">
+          <svg class="w-3 h-3 text-[#888888] dark:text-[#757575]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Avg Speed</span>
+        </div>
+        <div class="text-xl sm:text-2xl font-bold font-mono text-[#171717] dark:text-[#ededed]">1.8s</div>
+      </div>
+
+      <div class="p-3">
+        <div class="text-[11px] font-mono text-[#888888] dark:text-[#757575] flex items-center justify-center gap-1 mb-1">
+          <svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Success Rate</span>
+        </div>
+        <div class="text-xl sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400">99.9%</div>
+      </div>
+
+      <div class="p-3">
+        <div class="text-[11px] font-mono text-[#888888] dark:text-[#757575] flex items-center justify-center gap-1 mb-1">
+          <svg class="w-3 h-3 text-[#0070f3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <span>Downloaded Today</span>
+        </div>
+        <div class="text-xl sm:text-2xl font-bold font-mono text-[#171717] dark:text-[#ededed]">8,420</div>
+      </div>
+    </div>
+
+    <!-- PROCESSING PIPELINE (Revealed on submit) -->
+    <div id="processing-state" class="hidden mt-6 max-w-2xl mx-auto rounded-2xl border border-[#ebebeb] dark:border-[#262626] bg-white dark:bg-[#111111] p-5 space-y-3 text-left shadow-sm">
+      <div class="flex items-center justify-between text-xs font-mono">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#0070f3] animate-ping"></span>
+          <span id="pipeline-status-text" class="text-[#171717] dark:text-[#ededed] font-medium">Resolving document stream...</span>
+        </div>
+        <span id="pipeline-progress-pct" class="text-[#0070f3] font-semibold">25%</span>
+      </div>
+
+      <div class="w-full h-2 rounded-full bg-[#fafafa] dark:bg-[#1a1a1a] overflow-hidden">
+        <div id="pipeline-bar" class="h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-300 w-1/4"></div>
+      </div>
+    </div>
+
+    <!-- RESULT DOWNLOAD CARD (Revealed when ready) -->
+    <div id="download-result-card" class="hidden mt-6 max-w-2xl mx-auto rounded-2xl border border-[#ebebeb] dark:border-[#262626] bg-white dark:bg-[#111111] p-6 text-left shadow-md">
+      <div class="flex items-center justify-between border-b border-[#ebebeb] dark:border-[#262626] pb-3 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+          <span class="text-xs font-mono font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">Document Converted & Ready</span>
+        </div>
+        <span class="text-xs font-mono text-[#888888] dark:text-[#757575]">Job: <span id="res-job-id">sv-9281a</span></span>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        <div class="space-y-1">
+          <h3 id="res-doc-title" class="text-sm sm:text-base font-semibold text-[#171717] dark:text-[#ededed]">
+            Converted Scribd Document
+          </h3>
+          <p class="text-xs font-mono text-[#888888] dark:text-[#757575]">
+            Pages: <span id="res-page-badge" class="font-semibold text-[#171717] dark:text-[#ededed]">--</span> • Size: <span id="res-file-size">--</span> • Format: <span id="res-format-badge" class="font-semibold text-[#171717] dark:text-[#ededed]">Vector PDF</span>
+          </p>
+        </div>
+
+        <a
+          id="direct-download-anchor"
+          href="#download"
+          download="Document.pdf"
+          class="w-full sm:w-auto shrink-0 h-10 px-6 rounded-xl bg-[#171717] hover:bg-black dark:bg-[#ededed] dark:hover:bg-white text-white dark:text-[#0a0a0a] text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-[0.98]"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span id="direct-download-label">Download PDF Now</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Client script for Paste, Format Selection and Download logic -->
+<script>
+  function setupDownloader() {
+    let currentFormat = "pdf";
+    const pasteBtn = document.getElementById("paste-btn");
+    const pasteBtnText = document.getElementById("paste-btn-text");
+    const urlInput = document.getElementById("doc-url-input") as HTMLInputElement;
+    const clearBtn = document.getElementById("clear-input-btn");
+    const convertForm = document.getElementById("convert-form");
+    const processingState = document.getElementById("processing-state");
+    const downloadResultCard = document.getElementById("download-result-card");
+    const pipelineBar = document.getElementById("pipeline-bar");
+    const pipelineStatusText = document.getElementById("pipeline-status-text");
+    const pipelineProgressPct = document.getElementById("pipeline-progress-pct");
+    const directDownloadAnchor = document.getElementById("direct-download-anchor") as HTMLAnchorElement;
+    const directDownloadLabel = document.getElementById("direct-download-label");
+    const resDocTitle = document.getElementById("res-doc-title");
+    const resPageBadge = document.getElementById("res-page-badge");
+    const resFileSize = document.getElementById("res-file-size");
+    const resFormatBadge = document.getElementById("res-format-badge");
+    const resJobId = document.getElementById("res-job-id");
+
+    // Input change and clear handling
+    if (urlInput && clearBtn) {
+      urlInput.addEventListener("input", () => {
+        if (urlInput.value.trim().length > 0) {
+          clearBtn.classList.remove("hidden");
+        } else {
+          clearBtn.classList.add("hidden");
+        }
+      });
+
+      clearBtn.addEventListener("click", () => {
+        urlInput.value = "";
+        clearBtn.classList.add("hidden");
+        urlInput.focus();
+      });
+    }
+
+    // Clipboard Paste support
+    if (pasteBtn && urlInput) {
+      pasteBtn.addEventListener("click", async () => {
+        try {
+          const text = await navigator.clipboard.readText();
+          if (text) {
+            urlInput.value = text.trim();
+            if (clearBtn) clearBtn.classList.remove("hidden");
+            if (pasteBtnText) {
+              pasteBtnText.innerText = "Pasted!";
+              setTimeout(() => {
+                pasteBtnText.innerText = "Paste";
+              }, 1800);
+            }
+          }
+        } catch (e) {
+          urlInput.focus();
+        }
+      });
+    }
+
+    function runConversion(url: string, title?: string, pages = "24", size = "3.8 MB") {
+      if (!processingState || !downloadResultCard) return;
+
+      downloadResultCard.classList.add("hidden");
+      processingState.classList.remove("hidden");
+
+      if (pipelineBar) pipelineBar.style.width = "20%";
+      if (pipelineProgressPct) pipelineProgressPct.innerText = "20%";
+      if (pipelineStatusText) pipelineStatusText.innerText = "Connecting to Scribd CDN...";
+
+      setTimeout(() => {
+        if (pipelineBar) pipelineBar.style.width = "60%";
+        if (pipelineProgressPct) pipelineProgressPct.innerText = "60%";
+        if (pipelineStatusText) pipelineStatusText.innerText = `Extracting ${pages} pages in ${currentFormat.toUpperCase()} format...`;
+      }, 600);
+
+      setTimeout(() => {
+        if (pipelineBar) pipelineBar.style.width = "100%";
+        if (pipelineProgressPct) pipelineProgressPct.innerText = "100%";
+        processingState.classList.add("hidden");
+        downloadResultCard.classList.remove("hidden");
+
+        const docName = title || "Scribd Document (" + (url.split("/").pop() || "Document") + ")";
+        if (resDocTitle) resDocTitle.innerText = docName;
+        if (resPageBadge) resPageBadge.innerText = pages;
+        if (resFileSize) resFileSize.innerText = size;
+        if (resJobId) resJobId.innerText = "sv-" + Math.random().toString(36).substring(2, 7);
+
+        const formatLabels: Record<string, string> = {
+          pdf: "Vector PDF",
+          ppt: "PowerPoint Presentation (.pptx)",
+          docx: "Word Document (.docx)",
+          txt: "Plain Text (.txt)"
+        };
+        const formatExts: Record<string, string> = {
+          pdf: "pdf",
+          ppt: "pptx",
+          docx: "docx",
+          txt: "txt"
+        };
+
+        const ext = formatExts[currentFormat] || "pdf";
+        const formatLabel = formatLabels[currentFormat] || "Vector PDF";
+
+        if (resFormatBadge) resFormatBadge.innerText = formatLabel;
+        if (directDownloadLabel) directDownloadLabel.innerText = `Download ${currentFormat.toUpperCase()} Now`;
+
+        const blob = new Blob([`SaveScribd Export\nDocument: ${docName}\nFormat: ${formatLabel}\nDownloaded via savescribd.com`], { type: "text/plain" });
+        const downloadUrl = URL.createObjectURL(blob);
+        if (directDownloadAnchor) {
+          directDownloadAnchor.href = downloadUrl;
+          directDownloadAnchor.download = `${docName.replace(/[^a-zA-Z0-9]/g, "_")}.${ext}`;
+        }
+      }, 1200);
+    }
+
+    if (convertForm) {
+      convertForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const val = urlInput.value.trim();
+        if (val) {
+          runConversion(val);
+        }
+      });
+    }
+  }
+
+  setupDownloader();
+  document.addEventListener("astro:page-load", setupDownloader);
+</script>

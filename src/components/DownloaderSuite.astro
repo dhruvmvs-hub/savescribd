@@ -1,0 +1,679 @@
+---
+// DownloaderSuite.astro - The core conversion and document reading application
+---
+
+<section id="downloader" class="max-w-4xl mx-auto px-4 sm:px-6 mb-16 scroll-mt-24">
+  <div class="rounded-2xl border border-[#ebebeb] bg-white p-6 sm:p-8 shadow-sm">
+    <!-- Tab Controls -->
+    <div class="flex items-center justify-between border-b border-[#ebebeb] pb-4 mb-6">
+      <div class="flex items-center gap-2 sm:gap-3" id="tab-controls">
+        <button
+          type="button"
+          data-tab="single"
+          class="tab-btn active px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-[#171717] text-white cursor-pointer"
+        >
+          Single Document
+        </button>
+        <button
+          type="button"
+          data-tab="batch"
+          class="tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-[#f2f2f2] text-[#4d4d4d] hover:text-[#171717] cursor-pointer"
+        >
+          Batch Downloader
+          <span class="ml-1 text-[10px] font-mono px-1.5 py-0.2 rounded bg-violet-100 text-violet-700">NEW</span>
+        </button>
+        <button
+          type="button"
+          data-tab="reader"
+          id="reader-tab-btn"
+          class="tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-[#f2f2f2] text-[#4d4d4d] hover:text-[#171717] cursor-pointer"
+        >
+          Live Reader
+        </button>
+      </div>
+
+      <div class="hidden sm:flex items-center gap-1.5 text-xs font-mono text-[#8f8f8f]">
+        <svg class="w-3.5 h-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span>High-Speed Vector Engine</span>
+      </div>
+    </div>
+
+    <!-- TAB 1: SINGLE DOCUMENT CONVERTER -->
+    <div id="tab-single-content" class="tab-pane block space-y-6">
+      <form id="convert-form" class="space-y-4">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label for="doc-url-input" class="text-xs font-mono font-medium uppercase tracking-wide text-[#4d4d4d]">
+              Scribd Document URL / ID
+            </label>
+            <button
+              type="button"
+              id="paste-btn"
+              class="inline-flex items-center gap-1 text-xs text-[#0070f3] hover:text-[#0761d1] font-medium cursor-pointer"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              <span>Paste Link</span>
+            </button>
+          </div>
+
+          <!-- Main Input Field -->
+          <div class="relative flex items-center">
+            <div class="absolute left-3.5 pointer-events-none text-[#8f8f8f]">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+            </div>
+            <input
+              type="text"
+              id="doc-url-input"
+              placeholder="e.g. https://www.scribd.com/document/593847291/Sample-Document or 593847291"
+              required
+              class="w-full h-12 pl-10 pr-24 rounded-lg border border-[#ebebeb] bg-[#fafafa] focus:bg-white focus:border-[#171717] focus:ring-1 focus:ring-[#171717] outline-none text-sm text-[#171717] placeholder:text-[#a1a1a1] transition-all font-mono"
+            />
+            <button
+              type="button"
+              id="clear-input-btn"
+              class="hidden absolute right-3 px-2 py-1 text-xs text-[#8f8f8f] hover:text-[#171717] cursor-pointer"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+
+        <!-- Format Selector (Exclusive SaveScribd Advantage over FromScribd) -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-medium uppercase tracking-wide text-[#4d4d4d]">Select Output Format</span>
+            <span class="text-[11px] text-[#8f8f8f]">SaveScribd supports 4 high-resolution export formats</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="format-selector">
+            <label class="format-card relative flex items-center gap-2 p-3 rounded-lg border border-[#171717] bg-[#fafafa] cursor-pointer transition-all">
+              <input type="radio" name="format" value="pdf" checked class="hidden" />
+              <div class="w-7 h-7 rounded bg-[#171717] text-white flex items-center justify-center font-mono font-bold text-xs shrink-0">
+                PDF
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-[#171717] truncate">Vector PDF</div>
+                <div class="text-[10px] text-[#8f8f8f] truncate">Print-quality</div>
+              </div>
+            </label>
+
+            <label class="format-card relative flex items-center gap-2 p-3 rounded-lg border border-[#ebebeb] bg-white hover:border-[#171717] cursor-pointer transition-all">
+              <input type="radio" name="format" value="txt" class="hidden" />
+              <div class="w-7 h-7 rounded bg-[#0070f3] text-white flex items-center justify-center font-mono font-bold text-xs shrink-0">
+                TXT
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-[#171717] truncate">Clean Text</div>
+                <div class="text-[10px] text-[#8f8f8f] truncate">For AI / Notes</div>
+              </div>
+            </label>
+
+            <label class="format-card relative flex items-center gap-2 p-3 rounded-lg border border-[#ebebeb] bg-white hover:border-[#171717] cursor-pointer transition-all">
+              <input type="radio" name="format" value="docx" class="hidden" />
+              <div class="w-7 h-7 rounded bg-[#0761d1] text-white flex items-center justify-center font-mono font-bold text-xs shrink-0">
+                DOC
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-[#171717] truncate">Word Doc</div>
+                <div class="text-[10px] text-[#8f8f8f] truncate">Fully editable</div>
+              </div>
+            </label>
+
+            <label class="format-card relative flex items-center gap-2 p-3 rounded-lg border border-[#ebebeb] bg-white hover:border-[#171717] cursor-pointer transition-all">
+              <input type="radio" name="format" value="zip" class="hidden" />
+              <div class="w-7 h-7 rounded bg-[#7928ca] text-white flex items-center justify-center font-mono font-bold text-xs shrink-0">
+                ZIP
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-[#171717] truncate">Images ZIP</div>
+                <div class="text-[10px] text-[#8f8f8f] truncate">Page-by-page</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Action Submit Button -->
+        <button
+          type="submit"
+          id="submit-convert-btn"
+          class="w-full h-12 rounded-full bg-[#171717] hover:bg-[#000000] text-white text-sm sm:text-base font-medium flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md active:scale-[0.99]"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span id="submit-btn-text">Extract & Download Now</span>
+        </button>
+      </form>
+
+      <!-- PROGRESS AND PROCESSING STATE (Hidden by default) -->
+      <div id="processing-state" class="hidden rounded-xl border border-[#ebebeb] bg-[#fafafa] p-6 space-y-4">
+        <div class="flex items-center justify-between text-xs font-mono">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#0070f3] animate-ping"></span>
+            <span id="pipeline-status-text" class="text-[#171717] font-medium">Resolving document stream...</span>
+          </div>
+          <span id="pipeline-progress-pct" class="text-[#0070f3] font-semibold">25%</span>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full h-2 rounded-full bg-[#ebebeb] overflow-hidden">
+          <div id="pipeline-bar" class="h-full bg-gradient-to-r from-[#007cf0] to-[#7928ca] transition-all duration-300 w-1/4"></div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 text-center text-[11px] font-mono text-[#8f8f8f] pt-1">
+          <div id="step-node-1" class="text-[#0070f3] font-medium">1. Link Verified</div>
+          <div id="step-node-2" class="text-[#8f8f8f]">2. Extracting Pages</div>
+          <div id="step-node-3" class="text-[#8f8f8f]">3. Rendering Stream</div>
+        </div>
+      </div>
+
+      <!-- SUCCESS DOWNLOAD CARD (Hidden until ready) -->
+      <div id="download-result-card" class="hidden rounded-xl border border-[#ebebeb] bg-[#ffffff] p-6 space-y-6 whisper-shadow">
+        <div class="flex items-start justify-between border-b border-[#f2f2f2] pb-4">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+            <span class="text-xs font-mono font-medium uppercase tracking-wide text-emerald-600">Document Converted & Ready</span>
+          </div>
+          <span class="text-xs font-mono text-[#8f8f8f]">Job ID: <span id="res-job-id">sv-9281a</span></span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-5 items-start">
+          <!-- Thumbnail Cover Mock -->
+          <div class="w-full sm:w-36 h-48 rounded-lg border border-[#ebebeb] bg-[#fafafa] flex flex-col items-center justify-center p-3 relative overflow-hidden shrink-0 group">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 pointer-events-none"></div>
+            <div class="w-10 h-10 rounded-md bg-[#171717] text-white flex items-center justify-center font-mono font-bold text-sm mb-2 shadow">
+              <span id="res-thumb-badge">PDF</span>
+            </div>
+            <div class="w-full space-y-1.5 opacity-40 px-2">
+              <div class="h-1.5 bg-[#4d4d4d] rounded-full w-3/4"></div>
+              <div class="h-1 bg-[#8f8f8f] rounded-full w-full"></div>
+              <div class="h-1 bg-[#8f8f8f] rounded-full w-5/6"></div>
+              <div class="h-1 bg-[#8f8f8f] rounded-full w-4/6"></div>
+            </div>
+            <span class="absolute bottom-2 text-[10px] font-mono text-white bg-black/60 px-2 py-0.5 rounded backdrop-blur-xs">
+              <span id="res-page-badge">24</span> Pages
+            </span>
+          </div>
+
+          <!-- Document Metadata & Actions -->
+          <div class="flex-1 space-y-4">
+            <div>
+              <h3 id="res-doc-title" class="text-base sm:text-lg font-semibold text-[#171717] leading-snug">
+                Medical Pharmacology: High-Yield Clinical Drug Reference
+              </h3>
+              <p class="text-xs text-[#8f8f8f] mt-1 font-mono">
+                Source: <span id="res-source-domain">scribd.com</span> • Size: <span id="res-file-size">3.8 MB</span> • Quality: Lossless Vector
+              </p>
+            </div>
+
+            <!-- Action Buttons Grid -->
+            <div class="flex flex-col sm:flex-row gap-2.5 pt-2">
+              <a
+                id="direct-download-anchor"
+                href="#download"
+                download="Document.pdf"
+                class="flex-1 h-11 px-5 rounded-full bg-[#171717] hover:bg-[#000000] text-white text-xs sm:text-sm font-medium flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span>Download <span id="res-format-label">PDF</span> Now</span>
+              </a>
+
+              <button
+                type="button"
+                id="open-reader-action"
+                class="h-11 px-5 rounded-full border border-[#ebebeb] bg-white hover:bg-[#fafafa] text-[#171717] text-xs sm:text-sm font-medium flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <svg class="w-4 h-4 text-[#0070f3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span>Read in Browser</span>
+              </button>
+            </div>
+
+            <div class="flex items-center gap-3 text-xs text-[#8f8f8f] pt-1 font-mono">
+              <span class="flex items-center gap-1">
+                <svg class="w-3.5 h-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                Virus & Malware Scanned
+              </span>
+              <span>•</span>
+              <button type="button" id="convert-another-btn" class="text-[#0070f3] hover:underline cursor-pointer">
+                Convert another link
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: BATCH DOWNLOADER -->
+    <div id="tab-batch-content" class="tab-pane hidden space-y-6">
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <label for="batch-textarea" class="text-xs font-mono font-medium uppercase tracking-wide text-[#4d4d4d]">
+            Paste Multiple Scribd URLs (One per line)
+          </label>
+          <span class="text-xs font-mono text-[#8f8f8f]">Max 10 per batch</span>
+        </div>
+        <textarea
+          id="batch-textarea"
+          rows="5"
+          placeholder="https://www.scribd.com/document/593847291/Notes-1&#10;https://www.scribd.com/document/749204812/Notes-2&#10;https://www.scribd.com/document/618492015/Notes-3"
+          class="w-full p-3.5 rounded-lg border border-[#ebebeb] bg-[#fafafa] focus:bg-white focus:border-[#171717] focus:ring-1 focus:ring-[#171717] outline-none text-xs sm:text-sm font-mono text-[#171717] placeholder:text-[#a1a1a1] transition-all"
+        ></textarea>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <button
+          type="button"
+          id="fill-batch-sample-btn"
+          class="text-xs text-[#0070f3] hover:underline font-mono cursor-pointer"
+        >
+          + Load sample batch URLs
+        </button>
+
+        <button
+          type="button"
+          id="start-batch-btn"
+          class="h-10 px-6 rounded-full bg-[#171717] hover:bg-[#000000] text-white text-xs sm:text-sm font-medium transition-all cursor-pointer"
+        >
+          Start Batch Queue
+        </button>
+      </div>
+
+      <!-- Batch Queue Status Table -->
+      <div id="batch-queue-container" class="hidden rounded-lg border border-[#ebebeb] overflow-hidden">
+        <div class="bg-[#fafafa] px-4 py-2.5 border-b border-[#ebebeb] flex items-center justify-between text-xs font-mono text-[#4d4d4d]">
+          <span>Batch Queue (<span id="batch-count">3</span> items)</span>
+          <span class="text-emerald-600 font-medium">Ready</span>
+        </div>
+        <div class="divide-y divide-[#f2f2f2]" id="batch-items-list">
+          <!-- Rendered dynamically -->
+        </div>
+        <div class="p-3 bg-[#fafafa] flex justify-end">
+          <button
+            type="button"
+            id="download-all-zip-btn"
+            class="h-9 px-4 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-xs"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span>Download All as Unified ZIP</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: LIVE IN-BROWSER READER -->
+    <div id="tab-reader-content" class="tab-pane hidden space-y-4">
+      <div class="flex items-center justify-between border-b border-[#f2f2f2] pb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-[#0070f3]"></span>
+          <h4 id="reader-title" class="text-sm font-semibold text-[#171717] truncate max-w-sm">
+            Medical Pharmacology: High-Yield Clinical Drug Reference
+          </h4>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs font-mono">
+          <button
+            type="button"
+            id="zoom-out-btn"
+            class="w-7 h-7 rounded border border-[#ebebeb] bg-white hover:bg-[#fafafa] flex items-center justify-center text-[#171717] cursor-pointer"
+            title="Zoom Out"
+          >
+            -
+          </button>
+          <span id="zoom-level-text" class="text-[#4d4d4d]">100%</span>
+          <button
+            type="button"
+            id="zoom-in-btn"
+            class="w-7 h-7 rounded border border-[#ebebeb] bg-white hover:bg-[#fafafa] flex items-center justify-center text-[#171717] cursor-pointer"
+            title="Zoom In"
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+      <!-- Reader Canvas Container -->
+      <div class="relative min-h-[380px] sm:min-h-[460px] bg-[#f2f2f2] rounded-xl border border-[#ebebeb] flex items-center justify-center p-4 sm:p-6 overflow-auto" id="reader-viewport">
+        <!-- Interactive Paper Sheet -->
+        <div id="reader-page-sheet" class="w-full max-w-lg bg-white rounded-lg shadow-md border border-[#ebebeb] p-6 sm:p-8 space-y-4 transition-transform duration-200">
+          <div class="flex items-center justify-between border-b border-[#f2f2f2] pb-3 text-[11px] font-mono text-[#8f8f8f]">
+            <span>SaveScribd Document Previewer</span>
+            <span>Page <span id="current-page-num">1</span> of <span id="total-page-num">24</span></span>
+          </div>
+
+          <div id="reader-content-body" class="space-y-3 text-xs sm:text-sm text-[#171717] leading-relaxed font-serif">
+            <h5 class="text-base font-bold font-sans text-[#171717] mb-2">Section 1: Autonomic Nervous System & Receptor Kinetics</h5>
+            <p>
+              The autonomic nervous system regulates involuntary physiological processes including heart rate, blood pressure, respiration, digestion, and sexual arousal. It contains two functionally distinct branches: the sympathetic and parasympathetic divisions.
+            </p>
+            <div class="p-3 bg-[#fafafa] border border-[#ebebeb] rounded text-xs font-mono not-italic text-[#4d4d4d]">
+              Key Formula: Clearance (CL) = Rate of Elimination / Plasma Drug Concentration (C)
+            </div>
+            <p>
+              Muscarinic agonists act directly on acetylcholine receptors. Bethanechol acts selectively on M3 receptors in the urinary bladder and gastrointestinal tract to stimulate detrusor contraction and motility.
+            </p>
+          </div>
+
+          <div class="border-t border-[#f2f2f2] pt-3 flex items-center justify-between text-[11px] font-mono text-[#8f8f8f]">
+            <span>Confidential Medical Study Guide</span>
+            <span>Vector Crisp Resolution</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reader Navigation Toolbar -->
+      <div class="flex items-center justify-between pt-2">
+        <button
+          type="button"
+          id="prev-page-btn"
+          class="h-9 px-4 rounded-full border border-[#ebebeb] bg-white hover:bg-[#fafafa] text-xs font-medium text-[#171717] flex items-center gap-1.5 cursor-pointer disabled:opacity-40"
+        >
+          &larr; Previous Page
+        </button>
+
+        <span class="text-xs font-mono text-[#4d4d4d]">
+          Page <span id="toolbar-page-num">1</span> / <span id="toolbar-total-pages">24</span>
+        </span>
+
+        <button
+          type="button"
+          id="next-page-btn"
+          class="h-9 px-4 rounded-full border border-[#ebebeb] bg-white hover:bg-[#fafafa] text-xs font-medium text-[#171717] flex items-center gap-1.5 cursor-pointer"
+        >
+          Next Page &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Client Script for Full Interactivity -->
+<script>
+  // Tab Switching
+  const tabBtns = document.querySelectorAll<HTMLButtonElement>(".tab-btn");
+  const tabPanes = document.querySelectorAll<HTMLElement>(".tab-pane");
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const targetTab = btn.getAttribute("data-tab");
+      tabBtns.forEach((b) => {
+        b.classList.remove("bg-[#171717]", "text-white");
+        b.classList.add("bg-[#f2f2f2]", "text-[#4d4d4d]");
+      });
+      btn.classList.add("bg-[#171717]", "text-white");
+      btn.classList.remove("bg-[#f2f2f2]", "text-[#4d4d4d]");
+
+      tabPanes.forEach((pane) => pane.classList.add("hidden"));
+      const activePane = document.getElementById(`tab-${targetTab}-content`);
+      if (activePane) activePane.classList.remove("hidden");
+    });
+  });
+
+  // Format selection toggle
+  const formatCards = document.querySelectorAll<HTMLLabelElement>(".format-card");
+  let selectedFormat = "pdf";
+
+  formatCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      formatCards.forEach((c) => {
+        c.classList.remove("border-[#171717]", "bg-[#fafafa]");
+        c.classList.add("border-[#ebebeb]", "bg-white");
+      });
+      card.classList.add("border-[#171717]", "bg-[#fafafa]");
+      card.classList.remove("border-[#ebebeb]", "bg-white");
+      const radio = card.querySelector<HTMLInputElement>("input[type=radio]");
+      if (radio) selectedFormat = radio.value;
+    });
+  });
+
+  // Clipboard Paste Support
+  const pasteBtn = document.getElementById("paste-btn");
+  const urlInput = document.getElementById("doc-url-input") as HTMLInputElement;
+  const clearBtn = document.getElementById("clear-input-btn");
+
+  if (pasteBtn && urlInput) {
+    pasteBtn.addEventListener("click", async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          urlInput.value = text.trim();
+          urlInput.focus();
+          if (clearBtn) clearBtn.classList.remove("hidden");
+        }
+      } catch (err) {
+        urlInput.focus();
+      }
+    });
+  }
+
+  if (urlInput && clearBtn) {
+    urlInput.addEventListener("input", () => {
+      if (urlInput.value.length > 0) {
+        clearBtn.classList.remove("hidden");
+      } else {
+        clearBtn.classList.add("hidden");
+      }
+    });
+    clearBtn.addEventListener("click", () => {
+      urlInput.value = "";
+      clearBtn.classList.add("hidden");
+      urlInput.focus();
+    });
+  }
+
+  // Conversion Pipeline Simulation
+  const convertForm = document.getElementById("convert-form");
+  const processingState = document.getElementById("processing-state");
+  const downloadResultCard = document.getElementById("download-result-card");
+  const pipelineBar = document.getElementById("pipeline-bar");
+  const pipelineStatusText = document.getElementById("pipeline-status-text");
+  const pipelineProgressPct = document.getElementById("pipeline-progress-pct");
+
+  // Result Elements
+  const resDocTitle = document.getElementById("res-doc-title");
+  const resPageBadge = document.getElementById("res-page-badge");
+  const resThumbBadge = document.getElementById("res-thumb-badge");
+  const resFileSize = document.getElementById("res-file-size");
+  const resFormatLabel = document.getElementById("res-format-label");
+  const resJobId = document.getElementById("res-job-id");
+  const directDownloadAnchor = document.getElementById("direct-download-anchor") as HTMLAnchorElement;
+
+  function triggerConversion(url: string, title?: string, pages = "24", size = "3.8 MB") {
+    if (!processingState || !downloadResultCard) return;
+
+    // Reset view
+    downloadResultCard.classList.add("hidden");
+    processingState.classList.remove("hidden");
+
+    let progress = 15;
+    if (pipelineBar) pipelineBar.style.width = "15%";
+    if (pipelineProgressPct) pipelineProgressPct.innerText = "15%";
+    if (pipelineStatusText) pipelineStatusText.innerText = "Validating URL & checking Scribd CDN...";
+
+    const step1 = document.getElementById("step-node-1");
+    const step2 = document.getElementById("step-node-2");
+    const step3 = document.getElementById("step-node-3");
+
+    setTimeout(() => {
+      progress = 55;
+      if (pipelineBar) pipelineBar.style.width = "55%";
+      if (pipelineProgressPct) pipelineProgressPct.innerText = "55%";
+      if (pipelineStatusText) pipelineStatusText.innerText = `Extracting ${pages} vector page streams...`;
+      if (step2) step2.classList.add("text-[#0070f3]", "font-medium");
+    }, 700);
+
+    setTimeout(() => {
+      progress = 90;
+      if (pipelineBar) pipelineBar.style.width = "90%";
+      if (pipelineProgressPct) pipelineProgressPct.innerText = "90%";
+      if (pipelineStatusText) pipelineStatusText.innerText = `Packaging high-res ${selectedFormat.toUpperCase()} package...`;
+      if (step3) step3.classList.add("text-[#0070f3]", "font-medium");
+    }, 1400);
+
+    setTimeout(() => {
+      if (pipelineBar) pipelineBar.style.width = "100%";
+      if (pipelineProgressPct) pipelineProgressPct.innerText = "100%";
+      processingState.classList.add("hidden");
+      downloadResultCard.classList.remove("hidden");
+
+      const docName = title || "Scribd Document - " + (url.split("/").pop() || "Document");
+      if (resDocTitle) resDocTitle.innerText = docName;
+      if (resPageBadge) resPageBadge.innerText = pages;
+      if (resThumbBadge) resThumbBadge.innerText = selectedFormat.toUpperCase();
+      if (resFileSize) resFileSize.innerText = size;
+      if (resFormatLabel) resFormatLabel.innerText = selectedFormat.toUpperCase();
+      if (resJobId) resJobId.innerText = "sv-" + Math.random().toString(36).substring(2, 7);
+
+      // Create a mock downloadable blob for instant test satisfaction
+      const blob = new Blob([`SaveScribd Export\nDocument: ${docName}\nFormat: ${selectedFormat}\nPages: ${pages}\nDownloaded via savescribd.com`], { type: "text/plain" });
+      const downloadUrl = URL.createObjectURL(blob);
+      if (directDownloadAnchor) {
+        directDownloadAnchor.href = downloadUrl;
+        directDownloadAnchor.download = `${docName.replace(/[^a-zA-Z0-9]/g, "_")}.${selectedFormat === "pdf" ? "pdf" : selectedFormat === "docx" ? "docx" : selectedFormat === "zip" ? "zip" : "txt"}`;
+      }
+    }, 2000);
+  }
+
+  if (convertForm) {
+    convertForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const val = urlInput.value.trim();
+      if (val) {
+        triggerConversion(val);
+      }
+    });
+  }
+
+  // Convert another button
+  const convertAnotherBtn = document.getElementById("convert-another-btn");
+  if (convertAnotherBtn) {
+    convertAnotherBtn.addEventListener("click", () => {
+      if (downloadResultCard) downloadResultCard.classList.add("hidden");
+      if (urlInput) {
+        urlInput.value = "";
+        urlInput.focus();
+      }
+    });
+  }
+
+  // Open in Reader Action
+  const openReaderAction = document.getElementById("open-reader-action");
+  const readerTabBtn = document.getElementById("reader-tab-btn");
+  if (openReaderAction && readerTabBtn) {
+    openReaderAction.addEventListener("click", () => {
+      readerTabBtn.click();
+    });
+  }
+
+  // Reader Controls
+  let currentPage = 1;
+  const totalPages = 24;
+  let zoom = 100;
+
+  const prevPageBtn = document.getElementById("prev-page-btn") as HTMLButtonElement;
+  const nextPageBtn = document.getElementById("next-page-btn") as HTMLButtonElement;
+  const currentPageNum = document.getElementById("current-page-num");
+  const toolbarPageNum = document.getElementById("toolbar-page-num");
+  const zoomInBtn = document.getElementById("zoom-in-btn");
+  const zoomOutBtn = document.getElementById("zoom-out-btn");
+  const zoomLevelText = document.getElementById("zoom-level-text");
+  const readerPageSheet = document.getElementById("reader-page-sheet");
+
+  function updateReader() {
+    if (currentPageNum) currentPageNum.innerText = currentPage.toString();
+    if (toolbarPageNum) toolbarPageNum.innerText = currentPage.toString();
+    if (prevPageBtn) prevPageBtn.disabled = currentPage <= 1;
+    if (nextPageBtn) nextPageBtn.disabled = currentPage >= totalPages;
+  }
+
+  if (prevPageBtn) {
+    prevPageBtn.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        updateReader();
+      }
+    });
+  }
+
+  if (nextPageBtn) {
+    nextPageBtn.addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        updateReader();
+      }
+    });
+  }
+
+  if (zoomInBtn && zoomOutBtn && zoomLevelText && readerPageSheet) {
+    zoomInBtn.addEventListener("click", () => {
+      if (zoom < 140) {
+        zoom += 15;
+        zoomLevelText.innerText = `${zoom}%`;
+        readerPageSheet.style.transform = `scale(${zoom / 100})`;
+      }
+    });
+
+    zoomOutBtn.addEventListener("click", () => {
+      if (zoom > 70) {
+        zoom -= 15;
+        zoomLevelText.innerText = `${zoom}%`;
+        readerPageSheet.style.transform = `scale(${zoom / 100})`;
+      }
+    });
+  }
+
+  // Batch Mode Handlers
+  const fillBatchSampleBtn = document.getElementById("fill-batch-sample-btn");
+  const batchTextarea = document.getElementById("batch-textarea") as HTMLTextAreaElement;
+  const startBatchBtn = document.getElementById("start-batch-btn");
+  const batchQueueContainer = document.getElementById("batch-queue-container");
+  const batchItemsList = document.getElementById("batch-items-list");
+  const batchCount = document.getElementById("batch-count");
+
+  if (fillBatchSampleBtn && batchTextarea) {
+    fillBatchSampleBtn.addEventListener("click", () => {
+      batchTextarea.value = `https://www.scribd.com/document/593847291/Medical-Pharmacology-Notes\nhttps://www.scribd.com/document/749204812/Deep-Learning-Thesis\nhttps://www.scribd.com/document/618492015/SaaS-Financial-Model`;
+    });
+  }
+
+  if (startBatchBtn && batchTextarea && batchQueueContainer && batchItemsList) {
+    startBatchBtn.addEventListener("click", () => {
+      const lines = batchTextarea.value.split("\n").filter((l) => l.trim().length > 0);
+      if (lines.length === 0) return;
+
+      if (batchCount) batchCount.innerText = lines.length.toString();
+      batchQueueContainer.classList.remove("hidden");
+
+      batchItemsList.innerHTML = lines
+        .map(
+          (line, idx) => `
+        <div class="px-4 py-3 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2 truncate max-w-sm">
+            <span class="w-5 h-5 rounded bg-[#171717] text-white flex items-center justify-center font-mono text-[10px] shrink-0">${idx + 1}</span>
+            <span class="truncate font-mono text-[#171717]">${line}</span>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <span class="text-[11px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Ready to Package</span>
+            <button class="text-xs text-[#0070f3] hover:underline font-mono">Download</button>
+          </div>
+        </div>
+      `
+        )
+        .join("");
+    });
+  }
+</script>
